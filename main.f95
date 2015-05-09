@@ -42,6 +42,46 @@ endif
 !Leo cuantas operaciones hay que realizar para establecer el tope de mi ciclo
 read(entrada, *) cantoper
 
+do i=1,cantoper
+	
+	read(entrada,*) operacion
+	read(entrada,*) num1%Ndig
+	allocate( num1%Digs( num1%nDig ) )
+	read(entrada,*) num1%Digs
+	
+	
+	read(entrada,*) num2%nDig
+	allocate( num2%Digs( num2%nDig ) )
+	read(entrada,*)e2
+
+    !Asigno la operacion a realizarse dependiendo de lo que diga la cadena de texto
+    if (operacion=="suma") then
+	!write(salida,*) operacion
+      !write(salida,*) num1%Digs
+      !write(salida,*) num2%Digs
+      !call suma(num1, num2, s)
+      !write(salida,*) s
+      !write(salida,*)
+      
+    elseif (operacion=="resta") then
+	!write(salida,*) operacion  
+      !write(salida,*) num1%Digs
+      !write(salida,*) num2%Digs
+      !call resta(num1, num2, s)
+      !write(salida,*) s
+      !write(salida,*)
+      
+    elseif (operacion == "compara") then
+	!write(salida,*) operacion    
+      !write(salida,*) num1%Digs
+      !write(salida,*) num2%Digs
+      !write(salida,*) compara(num1,num2)
+	!write(salida,*)
+    else 
+      print*, "Operación invalida, saltando iteración"
+      cycle
+    endif
+enddo
 
 
 end program main
