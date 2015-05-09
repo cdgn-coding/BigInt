@@ -14,7 +14,7 @@ implicit none
 integer, parameter :: entrada=10, salida=11, maxlen=120
 !Declaración de variables
 type(BigInt) :: num1, num2
-integer :: ierr, cantoper, c
+integer :: ierr, cantoper, i
 character(len=maxlen) :: archivo, operacion
 
 
@@ -52,7 +52,7 @@ do i=1,cantoper
 	
 	read(entrada,*) num2%nDig
 	allocate( num2%Digs( num2%nDig ) )
-	read(entrada,*)e2
+	read(entrada,*) num2%Digs
 
     !Asigno la operacion a realizarse dependiendo de lo que diga la cadena de texto
     if (operacion=="suma") then
