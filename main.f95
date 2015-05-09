@@ -2,10 +2,12 @@
 !Rafael Tellez (12-11397)
 !Carlos David Nexans (-)
 
+!LIIISTO PERRITOOOOO YAYAYAJUUUUUUU!!!! Ctrl+C Ctrl+V V V V V V V V
+
 program main
 use libreriaBigInt
 implicit none
-!Declaración de variables
+!DeclaraciÃ³n de variables
 integer, dimension(:), allocatable :: e1,e2
 integer :: nDig1,nDig2,ierr,cantoper,i,c,compara
 character(len=120) :: archivo, operacion
@@ -20,7 +22,7 @@ if(ierr /= 0) then
   pause
   stop
 endif
-!Abro el archivo donde escribiré y reviso su correcta apertura
+!Abro el archivo donde escribirÃ© y reviso su correcta apertura
 open(unit=11,file="resultados.txt",action="w",status="unknown",iostat=ierr)
 if(ierr /= 0) then
   print*, "Error al abrir el archivo, finalizano programa."
@@ -69,7 +71,7 @@ do i=1,cantoper
       write(11,*)compara(e1,e2)
       write(11,*)" "
     else 
-      print*, "operación invalida, saltando iteración"
+      print*, "operaciÃ³n invalida, saltando iteraciÃ³n"
       cycle
     endif
 enddo
