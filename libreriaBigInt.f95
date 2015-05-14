@@ -2,7 +2,8 @@
 module libreriaBigInt
 implicit none
 
-integer*4, parameter :: BI__IGUAL = 0, BI__MENOR = -1, BI__MAYOR = 1
+integer, parameter :: BI__MAXnDIG = 500
+integer*2, parameter :: BI__IGUAL = 0, BI__MENOR = -1, BI__MAYOR = 1
 ! el prefijo BI es para denotar que los parametros pertenecen a este modulo para que no choquen 
 ! en algun otro proyecto que se haga
 
