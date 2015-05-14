@@ -2,15 +2,19 @@
 module libreriaBigInt
 implicit none
 
-integer, parameter :: BI__MAXnDIG = 500
-integer*2, parameter :: BI__IGUAL = 0, BI__MENOR = -1, BI__MAYOR = 1
-! el prefijo BI es para denotar que los parametros pertenecen a este modulo para que no choquen 
-! en algun otro proyecto que se haga
+!Definicion de constantes de la libreria
 
+integer, parameter :: BI__MAXDIGS = 500
+!Numero maximo de digitos en un tipo BigInt
+
+integer*2, parameter :: BI__IGUAL = 0, BI__MENOR = -1, BI__MAYOR = 1
+!Corresponde un valor numerico a una comparacion de dos tipos BigInt
+
+!Definicion del tipo de dato BigInt
 type BigInt
 	integer :: nDig !Contiene la cantidad de digitos del arreglo de digitos
 	integer*2, dimension(:), allocatable :: Digs
-	!Es un arreglo de tipo integer de dos bytes (short int en C) que contiene los digitos!
+	!Es un arreglo de tipo integer de dos bytes (short int en C) que contiene los digitos
 end type BigInt
 
 
@@ -24,6 +28,7 @@ contains
 	integer*2 :: c
 	integer :: i
 
+	!En caso que el numero de cifras sea diferente el problema es trivial, no hay mucho que hacer
 	if( x%nDig < y%nDig ) then
 		c = BI__MENOR
 		return
@@ -31,8 +36,8 @@ contains
 		c = BI__MAYOR
 		return
 	else
-	
-		do i = 1, x%nDig
+		!Comparamos las cifras de mayor a menor significancia
+		do i = x%nDig, 1, -1
 			if ( x%Digs(i)>y%Digs(i) ) then
 				c = BI__MAYOR
 				return
@@ -61,6 +66,8 @@ contains
 		else
 			z%nDig = y%nDig
 		end if
+		!Se toma el numero de digitos mas grande de los dos, o el numero de
+		!digitos del segundo, en caso que sean iguales; asi se reserva memoria
 		
 		
 		if ( allocated(z%Digs) ) then
@@ -69,8 +76,11 @@ contains
 		allocate( z%Digs(z%nDig) )
 		
 		z%Digs = 0
+		!Iniciamos todos los digitos en ero
 		
+		!Se suma desde la cifra menor significativa a la mayor
 		do i=1, z%nDig
+			!Si no hay digitos disponibles en algun sumando, se conviene que es cero
 			if( i <= x%nDig ) then
 				a = x%Digs(i)
 			else
@@ -83,27 +93,31 @@ contains
 				b = 0
 			end if
 			
+			!En efecto a+b = 10q + resto, dado que 0<=a+b<=18, se tiene q=0 o bien q=1
 			resto = mod(a+b, 10)
 			z%Digs(i) = resto
 			
+			!En caso que no haya espacio para la cifra siguiente, se inicializa 
+			!z de nuevo con un espacio extra para guardar tal cifra
 			if ( (resto<a+b) .and. (i==z%nDig) ) then
 				z = inicializar( z, z%nDig+1 )
 			end if
 			
+			!En caso que resto<a+b, quiere decir que q=1, o sea: 10<=a+b<=18
 			if( resto < a+b ) then
+				!De tal manera que si sucede, sumamos 1 al siguiente espacio
 				z%Digs(i+1) = z%Digs(i+1) + 1
 			end if
 
 			
 		end do
-		
+		!Este seria el algoritmo intuitivo
 		
 	end subroutine suma
 
-	! esta funcion no se pide como tal en el proyecto, pero nos sirve para las subrutinas
-	!de manera de que no se repita codigo, sirve para inicializar otro BigInt de otro tamaño
-	! pero con los mismos valores que c%Dig, el resto siendo 0
-	! ya sea para inicializar otro mas pequeño o mas grande
+	!Esta funcion no se pide en el laboratorio, pero nos sirve para hacer un codigo mas legible
+	!en las otras subrutinas como suma y resta. Inicializa un BigInt x con tamaño tam y ceros,
+	!luego de ello, introduce los digitos de c en x
 	function inicializar(x, tam) result(c)
 		type(BigInt), intent(in) :: x
 		integer, intent(in):: tam
