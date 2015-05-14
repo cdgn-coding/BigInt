@@ -14,8 +14,8 @@ implicit none
 integer, parameter :: entrada=10, salida=11, maxlen=120
 !Declaración de variables
 type(BigInt) :: num1, num2
-integer :: ierr, cantoper, i
-character(len=maxlen) :: archivo, operacion
+integer :: ierr, cantoper, i, digitos
+character(len=maxlen) :: archivo, operacion, str
 
 
 
@@ -45,17 +45,22 @@ read(entrada, *) cantoper
 do i=1,cantoper
 	
 	read(entrada,*) operacion
-	read(entrada,*) num1%Ndig
-	allocate( num1%Digs( num1%nDig ) )
-	read(entrada,*) num1%Digs
+	read(entrada,*) digitos
+	read(entrada,*) str
+	call str2BigInt( str, digitos, num1 )
 	
 	
-	read(entrada,*) num2%nDig
-	allocate( num2%Digs( num2%nDig ) )
-	read(entrada,*) num2%Digs
+	read(entrada,*) digitos
+	read(entrada,*) str
+	call str2BigInt( str, digitos, num2 )
 
     !Asigno la operacion a realizarse dependiendo de lo que diga la cadena de texto
     if (operacion=="suma") then
+    	call BigInt2str( str, num1 )
+    	print*, str
+    	call BigInt2str( str, num2 )
+    	print*, str
+    	
 	!write(salida,*) operacion
       !write(salida,*) num1%Digs
       !write(salida,*) num2%Digs
@@ -79,9 +84,40 @@ do i=1,cantoper
 	!write(salida,*)
     else 
       print*, "Operación invalida, saltando iteración"
-      cycle
     endif
+    !if( allocated(num1%Digs) ) deallocate(num1%Digs)
+    !if( allocated(num2%Digs) ) deallocate(num2%Digs)
 enddo
+
+
+contains
+
+	subroutine str2BigInt(str, nDig, num)
+		integer, intent(in):: nDig
+		character (len=*), intent (in) :: str
+		integer :: i
+		type(BigInt), intent(out) :: num
+		if( allocated(num%Digs) ) deallocate(num%Digs)
+		num%nDig = nDig
+		allocate( num%Digs(num%nDig) )
+		num%nDig = nDig
+		do i=1, nDig
+			num%Digs(nDig-i+1) = ichar( str(i:1) )
+		end do
+		
+	end subroutine str2BigInt
+	
+	subroutine BigInt2str(str, num)
+		character (len=maxlen), intent (out) :: str
+		integer :: i, nDig
+		type(BigInt), intent(in) :: num
+		nDig = num%nDig
+		str = ""
+		do i=1, nDig
+			str = trim(str) // char( num%Digs(nDig-i+1) )
+		end do
+		
+	end subroutine BigInt2str
 
 
 end program main

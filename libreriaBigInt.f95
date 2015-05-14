@@ -4,7 +4,7 @@ implicit none
 
 type BigInt
 	integer :: nDig !Contiene la cantidad de digitos del arreglo de digitos
-	integer*2, dimension(:), allocatable :: Digs
+	integer*4, dimension(:), allocatable :: Digs
 	!Es un arreglo de tipo integer de dos bytes (short int en C) que contiene los digitos!
 end type BigInt
 
