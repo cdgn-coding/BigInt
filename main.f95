@@ -15,7 +15,8 @@ integer, parameter :: entrada=10, salida=11, maxlen=120
 !Declaración de variables
 type(BigInt) :: num1, num2, resultado
 integer :: ierr, cantoper, i, digitos
-character(len=maxlen) :: archivo, operacion, str
+character(len=maxlen) :: archivo, operacion
+character (len=BI__MAXDIGS) :: str
 
 
 
@@ -116,7 +117,7 @@ contains
 	end subroutine str2BigInt
 	
 	subroutine BigInt2str(str, num)
-		character (len=maxlen), intent (out) :: str
+		character (len=BI__MAXDIGS), intent (out) :: str
 		integer :: i, nDig
 		character (len=1) :: digito
 		type(BigInt), intent(in) :: num
