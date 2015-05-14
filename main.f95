@@ -13,7 +13,7 @@ implicit none
 !Declaracion de constantes
 integer, parameter :: entrada=10, salida=11, maxlen=120
 !Declaración de variables
-type(BigInt) :: num1, num2
+type(BigInt) :: num1, num2, resultado
 integer :: ierr, cantoper, i, digitos
 character(len=maxlen) :: archivo, operacion, str
 
@@ -47,22 +47,26 @@ do i=1,cantoper
 	read(entrada,*) operacion
 	read(entrada,*) digitos
 	read(entrada,*) str
-	call str2BigInt( str, digitos, num1 )
+	call str2BigInt( trim(str), digitos, num1 )
 	
 	
 	read(entrada,*) digitos
 	read(entrada,*) str
-	call str2BigInt( str, digitos, num2 )
-
+	call str2BigInt( trim(str), digitos, num2 )
     !Asigno la operacion a realizarse dependiendo de lo que diga la cadena de texto
     if (operacion=="suma") then
-    	
-	!write(salida,*) operacion
-      !write(salida,*) num1%Digs
-      !write(salida,*) num2%Digs
-      !call suma(num1, num2, s)
-      !write(salida,*) s
-      !write(salida,*)
+
+	write(salida,*) trim(operacion)
+	   
+	call BigInt2str( str, num1 ) 
+      write(salida,*) trim(str)
+      
+      call BigInt2str( str, num2 )
+      write(salida,*) trim(str)
+      
+	call suma(num1, num2, resultado)
+	call BigInt2str( str, resultado )
+      write(salida,*) trim(str)
       
     elseif (operacion=="resta") then
 	!write(salida,*) operacion  
@@ -73,7 +77,7 @@ do i=1,cantoper
       !write(salida,*)
       
     elseif (operacion == "compara") then
-	write(salida,*) operacion
+	write(salida,*) trim(operacion)
 	   
 	call BigInt2str( str, num1 ) 
       write(salida,*) trim(str)
@@ -97,14 +101,16 @@ contains
 	subroutine str2BigInt(str, nDig, num)
 		integer, intent(in):: nDig
 		character (len=*), intent (in) :: str
-		integer :: i
+		integer :: i, j
 		type(BigInt), intent(out) :: num
 		if( allocated(num%Digs) ) deallocate(num%Digs)
 		num%nDig = nDig
 		allocate( num%Digs(num%nDig) )
 		num%nDig = nDig
+		
+
 		do i=1, nDig
-			num%Digs(nDig-i+1) = ichar( str(i:1) )
+			num%Digs(nDig - i + 1) = ichar( str(i:1) )-48
 		end do
 		
 	end subroutine str2BigInt
@@ -112,11 +118,13 @@ contains
 	subroutine BigInt2str(str, num)
 		character (len=maxlen), intent (out) :: str
 		integer :: i, nDig
+		character (len=1) :: digito
 		type(BigInt), intent(in) :: num
 		nDig = num%nDig
 		str = ""
 		do i=1, nDig
-			str = trim(str) // char( num%Digs(nDig-i+1) )
+			write(digito, '(i1)') num%Digs(nDig-i+1)
+			str = trim(str) // digito
 		end do
 		
 	end subroutine BigInt2str
