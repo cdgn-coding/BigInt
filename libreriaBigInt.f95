@@ -2,6 +2,10 @@
 module libreriaBigInt
 implicit none
 
+integer*4, parameter :: BI__IGUAL = 0, BI__MENOR = -1, BI__MAYOR = 1
+! el prefijo BI es para denotar que los parametros pertenecen a este modulo para que no choquen 
+! en algun otro proyecto que se haga
+
 type BigInt
 	integer :: nDig !Contiene la cantidad de digitos del arreglo de digitos
 	integer*4, dimension(:), allocatable :: Digs
@@ -15,33 +19,38 @@ contains
 	function compara(x,y) result(c)
 	implicit none
 
-	integer, dimension(:),intent(in) :: x
-	integer, dimension(:),intent(in) :: y
-	integer :: c, i
-	logical :: igualdad = .true.
+	type(BigInt), intent(in) :: x, y
+	integer*4 :: c
+	integer :: i
 
-	if(size(x)<size(y)) then
-	   c=-1
-	elseif(size(x)>size(y)) then
-	   c=1
+	if( x%nDig < y%nDig ) then
+		c = BI__MENOR
+		return
+	elseif( x%nDig > y%nDig ) then
+		c = BI__MAYOR
+		return
 	else
-	  do i = 1,size(x)
-		if (x(i)>y(i)) then
-		  c=1
-		  igualdad = .false.
-		  exit
-		elseif (x(i)<y(i)) then
-		  c=-1
-		  igualdad = .false.
-		  exit
-		else
-		  cycle
-		endif
-	  enddo
-	endif
+	
+		do i = 1, x%nDig
+			if ( x%Digs(i)>y%Digs(i) ) then
+				c = BI__MAYOR
+				return
+			elseif ( x%Digs(i)<y%Digs(i) ) then
+				c = BI__MENOR
+				return
+			else
+				cycle
+			end if
+		end do
+	  
+	end if
 
-	if(igualdad) c=0
+	c = BI__IGUAL
 	end function compara
+
+
+
+
 
 
 end module libreriaBigInt

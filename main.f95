@@ -56,10 +56,6 @@ do i=1,cantoper
 
     !Asigno la operacion a realizarse dependiendo de lo que diga la cadena de texto
     if (operacion=="suma") then
-    	call BigInt2str( str, num1 )
-    	print*, str
-    	call BigInt2str( str, num2 )
-    	print*, str
     	
 	!write(salida,*) operacion
       !write(salida,*) num1%Digs
@@ -77,11 +73,17 @@ do i=1,cantoper
       !write(salida,*)
       
     elseif (operacion == "compara") then
-	!write(salida,*) operacion    
-      !write(salida,*) num1%Digs
-      !write(salida,*) num2%Digs
-      !write(salida,*) compara(num1,num2)
-	!write(salida,*)
+	write(salida,*) operacion
+	   
+	call BigInt2str( str, num1 ) 
+      write(salida,*) trim(str)
+      
+      call BigInt2str( str, num2 )
+      write(salida,*) trim(str)
+      
+      write(str, '(i2)') compara(num1,num2)
+      write(salida,*) trim(str)
+
     else 
       print*, "Operación invalida, saltando iteración"
     endif
