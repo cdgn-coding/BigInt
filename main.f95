@@ -26,7 +26,6 @@ read*, archivo
 open(unit=entrada, file=archivo, action="read", status="old", iostat=ierr)
 if(ierr /= 0) then
   print*, "Error al abrir el archivo, finalizando programa."
-  !pause
   stop
 endif
 
@@ -35,7 +34,6 @@ endif
 open(unit=salida, file="resultados.txt", action="write", status="unknown", iostat=ierr)
 if(ierr /= 0) then
   print*, "Error al abrir el archivo, finalizano programa."
-  !pause
   stop
 endif
 
@@ -55,47 +53,60 @@ do i=1,cantoper
 	read(entrada,*) str
 	call str2BigInt( trim(str), digitos, num2 )
     !Asigno la operacion a realizarse dependiendo de lo que diga la cadena de texto
+    
     if (operacion=="suma") then
 
-	write(salida,*) trim(operacion)
+		write(salida,*) trim(operacion)
 	   
-	call BigInt2str( str, num1 ) 
-      write(salida,*) trim(str)
+		call BigInt2str( str, num1 ) 
+		write(salida,*) trim(str)
       
-      call BigInt2str( str, num2 )
-      write(salida,*) trim(str)
+		call BigInt2str( str, num2 )
+		write(salida,*) trim(str)
       
-	call suma(num1, num2, resultado)
-	call BigInt2str( str, resultado )
-      write(salida,*) trim(str)
+		call suma(num1, num2, resultado)
+		call BigInt2str( str, resultado )
+		write(salida,*) trim(str)
       
     elseif (operacion=="resta") then
-	!write(salida,*) operacion  
-      !write(salida,*) num1%Digs
-      !write(salida,*) num2%Digs
-      !call resta(num1, num2, s)
-      !write(salida,*) s
-      !write(salida,*)
+    
+		!write(salida,*) trim(operacion)
+		!call BigInt2str( str, num1 ) 
+		!write(salida,*) trim(str)
+      
+		!call BigInt2str( str, num2 )
+		!write(salida,*) trim(str)
+      
+		!call resta(num1, num2, resultado)
+		!call BigInt2str( str, resultado )
+		!write(salida,*) trim(str)
+      
+      
       
     elseif (operacion == "compara") then
-	write(salida,*) trim(operacion)
+		write(salida,*) trim(operacion)
 	   
-	call BigInt2str( str, num1 ) 
-      write(salida,*) trim(str)
+		call BigInt2str( str, num1 ) 
+		write(salida,*) trim(str)
       
-      call BigInt2str( str, num2 )
-      write(salida,*) trim(str)
+		call BigInt2str( str, num2 )
+		write(salida,*) trim(str)
       
-      write(str, '(i2)') compara(num1,num2)
-      write(salida,*) trim(str)
+		write(str, '(i2)') compara(num1,num2)
+		write(salida,*) trim(str)
 
     else 
-      print*, "Operación invalida, saltando iteración"
+		print*, "Operación invalida, saltando iteración"
     endif
-    !if( allocated(num1%Digs) ) deallocate(num1%Digs)
-    !if( allocated(num2%Digs) ) deallocate(num2%Digs)
-enddo
 
+    if( allocated(num1%Digs) ) then
+        deallocate(num1%Digs)
+    end if
+    if( allocated(num2%Digs) ) then
+        deallocate(num2%Digs)
+    end if
+
+enddo
 
 contains
 
@@ -104,7 +115,6 @@ contains
 		character (len=*), intent (in) :: str
 		integer :: i, j
 		type(BigInt), intent(out) :: num
-		if( allocated(num%Digs) ) deallocate(num%Digs)
 		num%nDig = nDig
 		allocate( num%Digs(num%nDig) )
 		num%nDig = nDig

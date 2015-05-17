@@ -68,10 +68,8 @@ contains
 		end if
 		!Se toma el numero de digitos mas grande de los dos, o el numero de
 		!digitos del segundo, en caso que sean iguales; asi se reserva memoria
-		
-		
-		if ( allocated(z%Digs) ) then
-			deallocate(z%Digs)
+		if (allocated(z%Digs)) then
+			deallocate(z%Digs) !Por si esta allocado lo desallocamos ;D
 		end if
 		allocate( z%Digs(z%nDig) )
 		
@@ -82,7 +80,7 @@ contains
 		do i=1, z%nDig
 			!Si no hay digitos disponibles en algun sumando, se conviene que es cero
 			if( i <= x%nDig ) then
-				a = x%Digs(i)
+				a = x%Digs(i) + z%Digs(i)
 			else
 				a = 0
 			end if
@@ -104,9 +102,9 @@ contains
 			end if
 			
 			!En caso que resto<a+b, quiere decir que q=1, o sea: 10<=a+b<=18
-			if( resto < a+b ) then
+			if( resto<a+b ) then
 				!De tal manera que si sucede, sumamos 1 al siguiente espacio
-				z%Digs(i+1) = z%Digs(i+1) + 1
+				z%Digs(i+1) = 1
 			end if
 
 			
@@ -114,7 +112,8 @@ contains
 		!Este seria el algoritmo intuitivo
 		
 	end subroutine suma
-
+	
+	
 	!Esta funcion no se pide en el laboratorio, pero nos sirve para hacer un codigo mas legible
 	!en las otras subrutinas como suma y resta. Inicializa un BigInt x con tamaño tam y ceros,
 	!luego de ello, introduce los digitos de c en x
