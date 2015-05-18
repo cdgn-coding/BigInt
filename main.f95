@@ -106,39 +106,7 @@ do i=1,cantoper
         deallocate(num2%Digs)
     end if
 
-enddo
-
-contains
-
-	subroutine str2BigInt(str, nDig, num)
-		integer, intent(in):: nDig
-		character (len=*), intent (in) :: str
-		integer :: i, j
-		type(BigInt), intent(out) :: num
-		num%nDig = nDig
-		allocate( num%Digs(num%nDig) )
-		num%nDig = nDig
-		
-
-		do i=1, nDig
-			num%Digs(nDig - i + 1) = ichar( str(i:1) )-48
-		end do
-		
-	end subroutine str2BigInt
-	
-	subroutine BigInt2str(str, num)
-		character (len=BI__MAXDIGS), intent (out) :: str
-		integer :: i, nDig
-		character (len=1) :: digito
-		type(BigInt), intent(in) :: num
-		nDig = num%nDig
-		str = ""
-		do i=1, nDig
-			write(digito, '(i1)') num%Digs(nDig-i+1)
-			str = trim(str) // digito
-		end do
-		
-	end subroutine BigInt2str
+end do
 
 
 end program main

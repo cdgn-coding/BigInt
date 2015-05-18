@@ -56,6 +56,7 @@ contains
 
 
 	subroutine suma(x, y, z)
+		implicit none !Dont repeat yourself (?)
 		type(BigInt), intent(in) :: x, y
 		type(BigInt), intent(out) :: z
 		integer :: i
@@ -68,9 +69,6 @@ contains
 		end if
 		!Se toma el numero de digitos mas grande de los dos, o el numero de
 		!digitos del segundo, en caso que sean iguales; asi se reserva memoria
-		if (allocated(z%Digs)) then
-			deallocate(z%Digs) !Por si esta allocado lo desallocamos ;D
-		end if
 		allocate( z%Digs(z%nDig) )
 		
 		z%Digs = 0
@@ -117,6 +115,7 @@ contains
 	
 	
 	subroutine resta(x, y, z)
+		implicit none
 		type(BigInt), intent(in) :: x, y
 		type(BigInt), intent(out) :: z
 		type(BigInt) :: aux ! Aux sera el numero menor entre x e y
@@ -126,9 +125,9 @@ contains
 		foo = compara(x, y)
 		!En z, momentaneamente guardaremos el numero mayor
 		
-		if (allocated(z%Digs)) then
-			deallocate(z%Digs) !Por si esta allocado lo desallocamos ;D
-		end if ! ATENCION : <------ Aparentemente en visual studio da problemas si no se limpia la solucion
+		!if (allocated(z%Digs)) then
+		!	deallocate(z%Digs) !Por si esta allocado lo desallocamos ;D
+		!end if ! ATENCION : <------ Aparentemente en visual studio da problemas si no se limpia la solucion
 		!Antes de buildear el codigo. PENDIENTE. Los allocatables en estructuras no son estandar
 		!Aparentemente el libro "aprenda fortran como si estuviera en primero" no quiso ser polemico
 		!Ni hacer mucho incapie en este tipo de problemas de portbilidad
@@ -207,7 +206,9 @@ contains
 	!Esta funcion no se pide en el laboratorio, pero nos sirve para hacer un codigo mas legible
 	!en las otras subrutinas como suma y resta. Inicializa un BigInt x con tamaño tam y ceros,
 	!luego de ello, introduce los digitos de c en x
+	!Mas que todo para no repetir el mismo codigo varias veces ...
 	function inicializar(x, tam) result(c)
+		implicit none
 		type(BigInt), intent(in) :: x
 		integer, intent(in):: tam
 		type(BigInt) :: c
@@ -224,6 +225,40 @@ contains
 		end do
 		
 	end function inicializar
+	
+	
+	!Estas subrutinas no fueron pedidas en el laboratorio pero nos sirven para no repetir codigo
+	!Aparte que puede aportar algo a la libreria en si.. Mas que dejarlo en el main, hemos
+	!preferido dejarlo aca
+	subroutine str2BigInt(str, nDig, num)
+		integer, intent(in):: nDig
+		character (len=*), intent (in) :: str
+		integer :: i
+		type(BigInt), intent(out) :: num
+		num%nDig = nDig
+		allocate( num%Digs(num%nDig) )
+		num%nDig = nDig
+		
+
+		do i=1, nDig
+			num%Digs(nDig - i + 1) = ichar( str(i:1) )-48
+		end do
+		
+	end subroutine str2BigInt
+	
+	subroutine BigInt2str(str, num)
+		character (len=BI__MAXDIGS), intent (out) :: str
+		integer :: i, nDig
+		character (len=1) :: digito
+		type(BigInt), intent(in) :: num
+		nDig = num%nDig
+		str = ""
+		do i=1, nDig
+			write(digito, '(i1)') num%Digs(nDig-i+1)
+			str = trim(str) // digito
+		end do
+		
+	end subroutine BigInt2str
 
 
 end module libreriaBigInt
