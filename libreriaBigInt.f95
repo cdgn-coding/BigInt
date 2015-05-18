@@ -114,6 +114,96 @@ contains
 	end subroutine suma
 	
 	
+	
+	
+	subroutine resta(x, y, z)
+		type(BigInt), intent(in) :: x, y
+		type(BigInt), intent(out) :: z
+		type(BigInt) :: aux ! Aux sera el numero menor entre x e y
+		integer :: i, j
+		integer*2 :: a, foo !foo guardara cual es mayor o menor, a sera un auxiliar	
+		
+		foo = compara(x, y)
+		!En z, momentaneamente guardaremos el numero mayor
+		
+		if (allocated(z%Digs)) then
+			deallocate(z%Digs) !Por si esta allocado lo desallocamos ;D
+		end if ! ATENCION : <------ Aparentemente en visual studio da problemas si no se limpia la solucion
+		!Antes de buildear el codigo. PENDIENTE. Los allocatables en estructuras no son estandar
+		!Aparentemente el libro "aprenda fortran como si estuviera en primero" no quiso ser polemico
+		!Ni hacer mucho incapie en este tipo de problemas de portbilidad
+		!En el caso del gnu fortran compiler esto es OK
+		
+		if ( foo == 1 ) then !Si x>y
+			aux%nDig = y%nDig
+			allocate( aux%Digs(aux%nDig) )
+			aux%Digs = y%Digs
+
+			z%nDig = x%nDig
+			allocate( z%Digs(z%nDig) )
+			z%Digs = x%Digs
+
+		else !Si x<=y
+			aux%nDig = x%nDig
+			allocate( aux%Digs(aux%nDig) )
+			aux%Digs = x%Digs
+			
+			z%nDig = y%nDig
+			allocate( z%Digs(z%nDig) )
+			z%Digs = y%Digs
+		end if
+		
+		do i=1, z%nDig
+			if( i <= aux%nDig ) then
+				a = aux%Digs(i)
+			else
+				a = 0
+			end if !Tomamos la cifra del menor que corresponde alinear el mayor - el menor
+			
+			if ( z%Digs(i) - a >= 0 ) then !Si la resta es propia de los positivos
+				z%Digs(i) = z%Digs(i) - a !restmos cifras y listo
+			else
+				!De lo contrario usamos el corolario de todas las maestras de primaria
+				!"Le pedimos prestado 1 al siguiente", no nos preocupamos por no tener siguiente
+				!Porque si tienen la misma cantidad de cifras y el menor tiene una cifra de mayor significado
+				!Mas grande, ... entonces no seria el menor
+				
+				z%Digs(i) = 10 + z%Digs(i) - a
+				!Que pasa si el siguiente es cero?
+				!Tenemos que buscar hasta que encontremos una cifra mayor o igual que uno para restarle 1
+				j = i+1
+				do while( z%Digs(j) == 0 ) 
+					z%Digs(j) = 9
+					j=j+1
+				end do
+				!Al final del ciclo esta la cifra que es mayor o igual a 1
+				
+				z%Digs(j) = z%Digs(j) - 1
+			
+			end if
+		
+		
+		end do
+		
+		!Ajustamos las cifras eliminando los ceros a la izquierda
+		j = 0
+		do while( z%Digs( z%nDig - j ) == 0 ) !Recorremos el vector al reves
+			j = j + 1
+		end do
+		
+		z = inicializar( z, z%nDig-j )
+		
+		deallocate( aux%Digs ) !Desreservamos este espacio de memoria que ya no utilizaremos
+		!Aparentemente los compiladores de fortran no tienen como estandar hacerlo automaticamente
+
+		
+		
+	end subroutine resta
+	
+	
+	
+	
+	
 	!Esta funcion no se pide en el laboratorio, pero nos sirve para hacer un codigo mas legible
 	!en las otras subrutinas como suma y resta. Inicializa un BigInt x con tamaño tam y ceros,
 	!luego de ello, introduce los digitos de c en x
@@ -127,6 +217,9 @@ contains
 		allocate(c%Digs(tam))
 		c%Digs = 0
 		do i=1, x%nDig
+			if (i>tam) then
+				exit
+			end if
 			c%Digs(i) = x%Digs(i)
 		end do
 		

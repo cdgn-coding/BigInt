@@ -70,16 +70,16 @@ do i=1,cantoper
       
     elseif (operacion=="resta") then
     
-		!write(salida,*) trim(operacion)
-		!call BigInt2str( str, num1 ) 
-		!write(salida,*) trim(str)
+		write(salida,*) trim(operacion)
+		call BigInt2str( str, num1 ) 
+		write(salida,*) trim(str)
       
-		!call BigInt2str( str, num2 )
-		!write(salida,*) trim(str)
+		call BigInt2str( str, num2 )
+		write(salida,*) trim(str)
       
-		!call resta(num1, num2, resultado)
-		!call BigInt2str( str, resultado )
-		!write(salida,*) trim(str)
+		call resta(num1, num2, resultado)
+		call BigInt2str( str, resultado )
+		write(salida,*) trim(str)
       
       
       
