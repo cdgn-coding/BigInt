@@ -80,7 +80,7 @@ contains
 		do i=1, z%nDig
 			!Si no hay digitos disponibles en algun sumando, se conviene que es cero
 			if( i <= x%nDig ) then
-				a = x%Digs(i) + z%Digs(i)
+				a = x%Digs(i)
 			else
 				a = 0
 			end if
@@ -90,7 +90,7 @@ contains
 			else
 				b = 0
 			end if
-			
+			a = a + z%Digs(i)
 			!En efecto a+b = 10q + resto, dado que 0<=a+b<=18, se tiene q=0 o bien q=1
 			resto = mod(a+b, 10)
 			z%Digs(i) = resto
