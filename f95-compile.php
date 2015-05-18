@@ -19,9 +19,10 @@ $path = __DIR__.'/';
 print("1. Compilar main.f95\n");
 print("2. Compilar libreriaBigInt.f95\n");
 print("3. Enlazar y crear ejecutable\n");
+print("4. Compilar todo, enlazar y crear ejecutable\n");
 print("Hacer opcion: ");
 fscanf(STDIN, "%d\n", $opcion);
-($opcion>=1 && $opcion<=3) or die("La opcion es inválida\n");
+($opcion>=1 && $opcion<=4) or die("La opcion es inválida\n");
 if( !is_dir($path.$dir_obj) ) mkdir($path.$dir_obj, $permisos);
 
 switch($opcion)
@@ -44,7 +45,18 @@ switch($opcion)
 		$r = shell_exec($s);
 		print($r);
 	break;
+	case 4:
+		$s = "f95 -c ".$path."libreriaBigInt.f95 -o ".$path.$dir_obj."libreriaBigInt.o -J".$path.$dir_obj;
+		$r = shell_exec($s);
+		print($r);
+		$s = "f95 -c ".$path."main.f95 -fintrinsic-modules-path ".$path.$dir_obj." -o ".$path.$dir_obj."main.o";
+		$r = shell_exec($s);
+		print($r);
+		if( !is_dir($path.$dir_bin) ) mkdir($path.$dir_bin, $permisos);
+		$s = "f95 ".$path.$dir_obj."libreriaBigInt.o ".$path.$dir_obj."main.o -o ".$path.$dir_bin.$nom_ejecutable;
+		$r = shell_exec($s);
+		print($r);
+	break;
 }
-
 
 ?>
