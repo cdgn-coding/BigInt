@@ -1,5 +1,9 @@
 <?php
-
+/*
+	!Proyecto numero 1, Computo científico II
+	!Carlos David Nexans (13-10591)
+	!Rafael Tellez (12-11397)
+/*
 /* Este script se encarga de compilar el codigo ya sea por partes o completamente
    De tal manera que no se tenga que ejecutar una linea larga llamando a f95 de manera repetida
    Si no existen los directorios los crea con permisos $permisos
@@ -8,6 +12,15 @@
    $nom_ejecutable : nombre del ejecutable
    
    Se ejecuta en el terminal como: php f95-compiile.php
+   * 
+   * Era importante siempre compilar las partes por separado
+   * Para estudiar los esrrores de sintaxis por separado
+   * 
+   * No fue probado en Windows pero si se tiene php y php-cli instalado
+   * 
+   * sudo apt-get install php5
+   * sudo apt-get install php5-cli
+   * 
    */
 
 $dir_obj = '/obj/';

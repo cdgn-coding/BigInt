@@ -1,6 +1,6 @@
-!Proyecto numero 1
+!Proyecto numero 1, Computo científico II
+!Carlos David Nexans (13-10591)
 !Rafael Tellez (12-11397)
-!Carlos David Nexans (-)
 
 program main
 

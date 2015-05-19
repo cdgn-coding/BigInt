@@ -1,4 +1,6 @@
-!prueba
+!Proyecto numero 1, Computo científico II
+!Carlos David Nexans (13-10591)
+!Rafael Tellez (12-11397)
 module libreriaBigInt
 implicit none
 
@@ -230,6 +232,9 @@ contains
 	!Estas subrutinas no fueron pedidas en el laboratorio pero nos sirven para no repetir codigo
 	!Aparte que puede aportar algo a la libreria en si.. Mas que dejarlo en el main, hemos
 	!preferido dejarlo aca
+	
+	!Esta subrutina toma cada caracter de la cadena leida y toma el codigo ascii para
+	!calcular la cifra a la que corresponde
 	subroutine str2BigInt(str, nDig, num)
 		integer, intent(in):: nDig
 		character (len=*), intent (in) :: str
@@ -246,6 +251,7 @@ contains
 		
 	end subroutine str2BigInt
 	
+	!En este escribimos sobre la cadena digito el numero que corresponde y lo vamos concatenando
 	subroutine BigInt2str(str, num)
 		character (len=BI__MAXDIGS), intent (out) :: str
 		integer :: i, nDig
