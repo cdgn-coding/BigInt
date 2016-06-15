@@ -8,4 +8,4 @@ Using the php script (if you have php and php-cli installed in GNU Linux):
 
 2) Type php f95-compile.php and follow the instructions
 
-*(Or)* Using Silverfrost just create a new project from this source
+*(Or)* Using Silverfrost: just create a new project from this source
