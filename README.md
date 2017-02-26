@@ -18,26 +18,29 @@ Integers are stored with the BigInt type that is composed with
 * BI__MENOR = -1
 * BI__MAYOR = 1
 
-### compara(x : BigInt, y : BigInt)
+**compara(x : BigInt, y : BigInt)**
 
 Returns:
 * BI_IGUAL if x == y
 * BI_MENOR if x < y
 * BI_MAYOR if x > y
 
-### suma(x : BigInt, y : BigInt, y : BigInt)
+**suma(x : BigInt, y : BigInt, y : BigInt)**
 
 Returns z = x + y by reference
 
-### resta(x : BigInt, y : BigInt, y : BigInt)
+**resta(x : BigInt, y : BigInt, y : BigInt)**
 
 Returns z = x - y by reference
 
 ##Compilation
 
-Using the php script (if you have php and php-cli installed in GNU Linux)
+**Using the php script**
 
+If you have php and php-cli installed in GNU Linux
 1. Open terminal/cmd and go to project directory: cd path/to/bigint/
 2. Type php f95-compile.php and follow the instructions
 
-*(Or)* Using Silverfrost: just create a new project from this source
+**Using Silverfrost**
+
+Just create a new project from this source
