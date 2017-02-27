@@ -4,14 +4,14 @@ A short module in Fortran 95 which deals with integers that can't be stored in t
 
 ## API documentation
 
-### Type BigInt
+**Type BigInt**
 
 Integers are stored with the BigInt type that is composed with
 
 * nDigs: the number of digits of the number
 * Digs: the vector containing the digits
 
-### Constants
+**Constants**
 
 * BI__MAXDIGS = 500. The maximum number of digits for the type BigInt
 * BI__IGUAL = 0
