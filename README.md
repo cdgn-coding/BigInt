@@ -38,6 +38,7 @@ Returns z = x - y by reference
 **Using the php script**
 
 If you have php and php-cli installed in GNU Linux
+
 1. Open terminal/cmd and go to project directory: cd path/to/bigint/
 2. Type php f95-compile.php and follow the instructions
 
